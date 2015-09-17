@@ -1,6 +1,6 @@
 # This script is on development
 
-## About readmypo
+## About this script
 
 This is PHP Command Line Script to read [Pushover](https://pushover.net/) message via [Pushover API](https://pushover.net/api/client).
 
