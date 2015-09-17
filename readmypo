@@ -1,83 +1,9 @@
 #!/usr/bin/php
 <?php
-/*
-
-This script requires other command "terminal-notifier". If you don't have it and have brew, do:
-brew install terminal-notifier
-
-Usage
-
-1. Put this script somewhere. I put in ~/scripts folder.
-
-2. First you register your device (your OSX machine).
-
-   Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):
-   readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
-
-   If it says "name: has already been taken", you need to delete the device at https://pushover.net/.
-
-   Above command registers your device and get information to read the message pushed from somewhere.
-
-   The new device can be seen at: https://pushover.net/
-   The infomation gets encrypted and saved as: ~/Library/Application Support/readmypo/settings.txt
-
-   Example Output:
-
-       Setting is saved to /Users/example/Library/Application Support/readmypo/settings.txt
-       Specify this key to use read command: 12b743fqAdBfL
-
-   The command displays the key for next step ("12b743fqAdBfL" for above example).
-   Remember the key because you need it for further steps.
-
-3. Next you test if this script can read the message.
-
-   Execute the following on terminal:
-   readmypo read <The key from Step 2>
-
-   If you see nothing after waiting for about 10 seconds, you need to push something to your device.
-   You can send a test message at: https://pushover.net/
-
-   This command never finishes unless there is error.
-
-   To finishes the command you press Ctrl + C on terminal.
-
-4. Finally, you regsiter this script to keep running with launchd.
-
-   cd ~/Library/LaunchAgents
-
-   Create a file ~/Library/LaunchAgents/local.readmypo.plist:
-
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>local.readmypo</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>/usr/bin/php</string>
-        <string><REPLACE HERE TO YOUR HOME DIRECTORY>/scripts/readmypo.php</string>
-        <string>read</string>
-        <string><REPLACE HERE TO YOUR KEY FROM STEP 2></string>
-    </array>
-</dict>
-</plist>
-
-   launchctl bootstrap gui/$UID local.readmypo.plist
-   launchctl enable gui/$UID/local.readmypo
-   launchctl kickstart -k gui/$UID/local.readmypo
-
-   If key has been changed:
-   launchctl unload local.readmypo.plist
-   launchctl bootstrap gui/$UID local.readmypo.plist
-   launchctl enable gui/$UID/local.readmypo
-*/
 define('PROGRAM', 'Read My PO');
 syslog(LOG_NOTICE, PROGRAM . ': Boot Check');
 
 define('PATH',  $_SERVER['HOME'] . '/Library/Application Support/readmypo');
-
-$filename = PATH . '/settings.txt';
 
 Class myCurl {
 
@@ -94,6 +20,13 @@ Class myCurl {
     }
     public function close() {
         curl_close($this->ch);
+    }
+
+    public function getSettingPath() {
+        return $_SERVER['HOME'] . '/Library/Application Support/readmypo';
+    }
+    public function getSettingFilename($deviceName) {
+        return $this->getSettingPath() . "/settings_{$deviceName}.txt";
     }
 
     public function showErrors() {
@@ -167,7 +100,7 @@ Class myCurl {
                     $args[] = "-subtitle '{$data->url}'";
                 }
                 if (count($args)) {
-                    syslog(LOG_NOTICE, PROGRAM . ': Command: ' . '/usr/local/bin/terminal-notifier ' . implode(' ', $args));
+                    syslog(LOG_NOTICE, PROGRAM . ': ' . '/usr/local/bin/terminal-notifier ' . implode(' ', $args));
                     exec('/usr/local/bin/terminal-notifier ' . implode(' ', $args));
                 }
                 // Delete Message
@@ -198,6 +131,8 @@ function exitWithUsage($argv) {
 }
 if (empty($argv[1])) exitWithUsage($argv);
 
+$myCurl = new myCurl;
+
 switch ($argv[1]) {
     case 'register':
 
@@ -220,12 +155,12 @@ switch ($argv[1]) {
             $deviceName = $argv[4];
         }
 
+        $filename = $myCurl->getSettingFilename($deviceName);
         if (file_exists($filename)) {
             echo "Setting File {$filename} exists - Please delete it manually\n";
             exit;
         }
 
-        $myCurl = new myCurl;
         $myCurl->open();
         $result = $myCurl->register($email, $pass, $deviceName);
         $myCurl->close();
@@ -234,7 +169,8 @@ switch ($argv[1]) {
             exit;
         }
 
-        if ( ! file_exists(PATH)) mkdir(PATH, 0755, true);
+        $path = $myCurl->getSettingPath();
+        if ( ! file_exists($path)) mkdir($path, 0755, true);
         $data = array(
             'secret' => $myCurl->secret,
             'device_id' => $myCurl->deviceId,
@@ -254,23 +190,32 @@ switch ($argv[1]) {
         file_put_contents($filename, $ciphertext_base64);
 
         echo "Setting is saved to {$filename}\n";
-        echo "Specify this key to use read command: {$key}\n";
+        echo "To read the message run \"readmypo read {$key} {$deviceName}\"\n";
 
         break;
 
     case 'read':
 
-        if ( ! file_exists($filename)) {
-            echo "Setting file is missing\n";
-            syslog(LOG_NOTICE, PROGRAM . ': Setting file is missing');
-            exit;
-        }
         if (empty($argv[2])) {
             echo "Key is missing\n";
             syslog(LOG_NOTICE, PROGRAM . ': Key is missing');
             exit;
         } else {
             $key = $argv[2];
+        }
+        if (empty($argv[3])) {
+            echo "Device Name is missing\n";
+            syslog(LOG_NOTICE, PROGRAM . ': Device Name missing');
+            exit;
+        } else {
+            $deviceName = $argv[3];
+        }
+
+        $filename = $myCurl->getSettingFilename($deviceName);
+        if ( ! file_exists($filename)) {
+            echo "Setting file is missing\n";
+            syslog(LOG_NOTICE, PROGRAM . ': Setting file is missing');
+            exit;
         }
 
         $ciphertext_dec = base64_decode(file_get_contents($filename));
@@ -286,8 +231,6 @@ switch ($argv[1]) {
             syslog(LOG_NOTICE, PROGRAM . ': Setting file is broken or key is incorrect');
             exit;
         }
-
-        $myCurl = new myCurl;
 
         $myCurl->secret = $setting->secret;
         $myCurl->deviceId = $setting->device_id;
