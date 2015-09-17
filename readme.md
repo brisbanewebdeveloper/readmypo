@@ -93,8 +93,13 @@ Example Log:
 
 #### I don't like how the message is shown
 
-This script checks if ```~/bin/readmypo``` exists and apply ```require``` if exists.  
-You extend the class ```myCurl```, define the method ```onParse()``` and return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array.
+This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if exists.
+
+- Extend the class ```myCurl```
+- Define the method ```onParse()```
+- Return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array
+
+That's it.
 
 #### Additional Info
 
