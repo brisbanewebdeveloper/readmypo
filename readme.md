@@ -83,8 +83,13 @@ launchctl enable gui/$UID/local.readmypo
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
-Open Console.app and keep eye on the process.  
-The log would start with ``````.
+Open Console.app and keep eye on the process.
+
+Example Log:
+
+```
+17/09/2015 8:54:10.567 pm php[24196]: Read My PO: /usr/local/bin/terminal-notifier -message 'Example message' -title 'Read MyPO' -open 'http://example.com/example-page.html' -subtitle 'http://example.com/example-page.html'
+```
 
 #### Additional Info
 
