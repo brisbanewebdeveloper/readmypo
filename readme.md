@@ -97,7 +97,7 @@ Example Log:
 
 This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if does.
 
-- Extend the class ```myCurl```
+- Define the class ```myCurlExt``` extending the class ```myCurl```
 - Define the method ```onParse()```
 - Return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array
 
