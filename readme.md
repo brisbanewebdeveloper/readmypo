@@ -1,7 +1,7 @@
 ## About this script
 
 - Unofficial [Pushover](https://pushover.net/) Client
-- PHP Command Line Script to read [Pushover](https://pushover.net/) Message via [Pushover Open Client API](https://pushover.net/api/client) for OSX Environment.
+- PHP Command Line Script to read [Pushover](https://pushover.net/) Message via [Pushover Open Client API](https://pushover.net/api/client) for OSX Environment
 
 ## Requirements
 
