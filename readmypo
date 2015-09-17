@@ -1,0 +1,322 @@
+#!/usr/bin/php
+<?php
+/*
+
+This script requires other command "terminal-notifier". If you don't have it and have brew, do:
+brew install terminal-notifier
+
+Usage
+
+1. Put this script somewhere. I put in ~/scripts folder.
+
+2. First you register your device (your OSX machine).
+
+   Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):
+   readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
+
+   If it says "name: has already been taken", you need to delete the device at https://pushover.net/.
+
+   Above command registers your device and get information to read the message pushed from somewhere.
+
+   The new device can be seen at: https://pushover.net/
+   The infomation gets encrypted and saved as: ~/Library/Application Support/readmypo/settings.txt
+
+   Example Output:
+
+       Setting is saved to /Users/example/Library/Application Support/readmypo/settings.txt
+       Specify this key to use read command: 12b743fqAdBfL
+
+   The command displays the key for next step ("12b743fqAdBfL" for above example).
+   Remember the key because you need it for further steps.
+
+3. Next you test if this script can read the message.
+
+   Execute the following on terminal:
+   readmypo read <The key from Step 2>
+
+   If you see nothing after waiting for about 10 seconds, you need to push something to your device.
+   You can send a test message at: https://pushover.net/
+
+   This command never finishes unless there is error.
+
+   To finishes the command you press Ctrl + C on terminal.
+
+4. Finally, you regsiter this script to keep running with launchd.
+
+   cd ~/Library/LaunchAgents
+
+   Create a file ~/Library/LaunchAgents/local.readmypo.plist:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.readmypo</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/php</string>
+        <string><REPLACE HERE TO YOUR HOME DIRECTORY>/scripts/readmypo.php</string>
+        <string>read</string>
+        <string><REPLACE HERE TO YOUR KEY FROM STEP 2></string>
+    </array>
+</dict>
+</plist>
+
+   launchctl bootstrap gui/$UID local.readmypo.plist
+   launchctl enable gui/$UID/local.readmypo
+   launchctl kickstart -k gui/$UID/local.readmypo
+
+   If key has been changed:
+   launchctl unload local.readmypo.plist
+   launchctl bootstrap gui/$UID local.readmypo.plist
+   launchctl enable gui/$UID/local.readmypo
+*/
+define('PROGRAM', 'Read My PO');
+syslog(LOG_NOTICE, PROGRAM . ': Boot Check');
+
+define('PATH',  $_SERVER['HOME'] . '/Library/Application Support/readmypo');
+
+$filename = PATH . '/settings.txt';
+
+Class myCurl {
+
+    private $ch;
+    private $errors = array();
+
+    public $secret;
+    public $deviceId;
+    public $messages = array();
+
+    public function open() {
+        $this->ch = curl_init();
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+    }
+    public function close() {
+        curl_close($this->ch);
+    }
+
+    public function showErrors() {
+        echo implode("\n", $this->errors) . "\n";
+        syslog(LOG_CRIT, PROGRAM . ': ' . implode(',', $this->errors));
+        $this->errors = array();
+    }
+
+    public function register($email, $pass, $deviceName) {
+
+        curl_setopt($this->ch, CURLOPT_URL, 'https://api.pushover.net/1/users/login.json');
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, array(
+            'email' => $email,
+            'password' => $pass,
+        ));
+        $result = json_decode(curl_exec($this->ch));
+        if ( ! $result->status) {
+            $this->errors[] = 'Login Failed';
+            return false;
+        }
+        $this->secret = $result->secret;
+
+        curl_setopt($this->ch, CURLOPT_URL, 'https://api.pushover.net/1/devices.json');
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, array(
+            'secret' => $result->secret,
+            'name' => $deviceName,
+            'os' => 'O',
+        ));
+        $result = json_decode(curl_exec($this->ch));
+        if ( ! $result->status) {
+            foreach ($result->errors as $key => $values) {
+                foreach ($values as $detail) {
+                    $this->errors[] = "{$key}: {$detail}";
+                }
+            }
+            return false;
+        }
+        $this->deviceId = $result->id;
+
+        return true;
+    }
+
+    public function read() {
+
+        $url = "https://api.pushover.net/1/messages.json?secret={$this->secret}&device_id={$this->deviceId}";
+        curl_setopt($this->ch, CURLOPT_URL, $url);
+        $result = json_decode(curl_exec($this->ch));
+        if ( ! $result->status) {
+            foreach ($result->errors as $value) {
+                $this->errors[] = $value;
+            }
+            return false;
+        }
+
+        $count = count($result->messages);
+        if ($count) {
+            foreach ($result->messages as $index => $data) {
+                // Read Message
+                // var_dump($data);
+                $args = array();
+                $data->message = escapeshellarg($data->message);
+                $args[] = "-message {$data->message}";
+                if (isset($data->title)) {
+                    $data->title = escapeshellarg($data->title);
+                    $args[] = "-title {$data->title}";
+                } else {
+                    $args[] = "-title 'Read MyPO'";
+                }
+                if (isset($data->url)) {
+                    $args[] = "-open '{$data->url}'";
+                    $args[] = "-subtitle '{$data->url}'";
+                }
+                if (count($args)) {
+                    syslog(LOG_NOTICE, PROGRAM . ': Command: ' . '/usr/local/bin/terminal-notifier ' . implode(' ', $args));
+                    exec('/usr/local/bin/terminal-notifier ' . implode(' ', $args));
+                }
+                // Delete Message
+                $url = "https://api.pushover.net/1/devices/{$this->deviceId}/update_highest_message.json";
+                curl_setopt($this->ch, CURLOPT_URL, $url);
+                curl_setopt($this->ch, CURLOPT_POSTFIELDS, array(
+                    'secret' => $this->secret,
+                    'message' => $data->id,
+                ));
+                $result = json_decode(curl_exec($this->ch));
+                // var_dump($result);
+            }
+        //} else {
+        //    // echo "No messages\n";
+        //    syslog(LOG_NOTICE, PROGRAM . ': No messages');
+        }
+        return true;
+    }
+}
+
+
+
+
+function exitWithUsage($argv) {
+    echo "Usage 1: {$argv[0]} register <email> <password> <device_name>\n";
+    echo "Usage 2: {$argv[0]} read <key> <device_name>\n";
+    exit;
+}
+if (empty($argv[1])) exitWithUsage($argv);
+
+switch ($argv[1]) {
+    case 'register':
+
+        if (empty($argv[2])) {
+            echo "Email is missing\n";
+            exit;
+        } else {
+            $email = $argv[2];
+        }
+        if (empty($argv[3])) {
+            echo "Password is missing\n";
+            exit;
+        } else {
+            $pass = $argv[3];
+        }
+        if (empty($argv[4])) {
+            echo "Device Name is missing\n";
+            exit;
+        } else {
+            $deviceName = $argv[4];
+        }
+
+        if (file_exists($filename)) {
+            echo "Setting File {$filename} exists - Please delete it manually\n";
+            exit;
+        }
+
+        $myCurl = new myCurl;
+        $myCurl->open();
+        $result = $myCurl->register($email, $pass, $deviceName);
+        $myCurl->close();
+        if ( ! $result) {
+            $myCurl->showErrors();
+            exit;
+        }
+
+        if ( ! file_exists(PATH)) mkdir(PATH, 0755, true);
+        $data = array(
+            'secret' => $myCurl->secret,
+            'device_id' => $myCurl->deviceId,
+        );
+
+
+        $key = uniqid();
+        $setting = json_encode($data);
+
+        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+        $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key,
+                                     $setting, MCRYPT_MODE_CBC, $iv);
+        $ciphertext = $iv . $ciphertext;
+        $ciphertext_base64 = base64_encode($ciphertext);
+
+        file_put_contents($filename, $ciphertext_base64);
+
+        echo "Setting is saved to {$filename}\n";
+        echo "Specify this key to use read command: {$key}\n";
+
+        break;
+
+    case 'read':
+
+        if ( ! file_exists($filename)) {
+            echo "Setting file is missing\n";
+            syslog(LOG_NOTICE, PROGRAM . ': Setting file is missing');
+            exit;
+        }
+        if (empty($argv[2])) {
+            echo "Key is missing\n";
+            syslog(LOG_NOTICE, PROGRAM . ': Key is missing');
+            exit;
+        } else {
+            $key = $argv[2];
+        }
+
+        $ciphertext_dec = base64_decode(file_get_contents($filename));
+        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+        $iv_dec = substr($ciphertext_dec, 0, $iv_size);
+        $ciphertext_dec = substr($ciphertext_dec, $iv_size);
+        $plaintext_dec = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key,
+                                        $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+
+        $setting = json_decode($plaintext_dec);
+        if (is_null($setting)) {
+            echo "Setting file is broken or key is incorrect\n";
+            syslog(LOG_NOTICE, PROGRAM . ': Setting file is broken or key is incorrect');
+            exit;
+        }
+
+        $myCurl = new myCurl;
+
+        $myCurl->secret = $setting->secret;
+        $myCurl->deviceId = $setting->device_id;
+
+        if (function_exists('pcntl_signal')) {
+            function sig_handler($sig_no) {
+                echo "Exiting\n";
+                syslog(LOG_NOTICE, PROGRAM . ': Exiting');
+                $myCurl->close();
+            }
+            pcntl_signal(SIGTERM, 'sig_handler');
+            pcntl_signal(SIGHUP,  'sig_handler');
+            pcntl_signal(SIGUSR1, 'sig_handler');
+        }
+
+        while (true) {
+            $myCurl->open();
+            // echo "Reading Message\n";
+            $result = $myCurl->read();
+            if ( ! $result) {
+                $myCurl->showErrors();
+                // exit;
+            }
+            $myCurl->close();
+            sleep(6);
+        }
+
+        break;
+
+    default:
+        exitWithUsage($argv);
+}
