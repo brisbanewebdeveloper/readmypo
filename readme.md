@@ -40,10 +40,10 @@ To read the message run "readmypo read 12e8a9s08e1sx <Device Name>"   <---- Use 
 Execute the following on terminal:
 
 ```shell
-> readmypo read <The key from Step 2> <Device Name>
+> readmypo read <The key from previous Step> <Device Name>
 ```
 
-If you see nothing after waiting for about 10 seconds, you need to push something to your device.
+If you see nothing after waiting for about 10 seconds, you need to push something to your device.  
 You can send a test message at: https://pushover.net/
 
 This command never finishes.  
