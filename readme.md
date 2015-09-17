@@ -136,7 +136,7 @@ The following command kills the current process and re-runs the ```read``` comma
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
-## So this is to receive the message for my OSX machine
+## Is this to receive the message for my OSX machine?
 
 Yes, it is. And the following does opposite, sending the message.  
 
