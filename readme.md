@@ -99,6 +99,17 @@ This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if e
 - Define the method ```onParse()```
 - Return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array
 
+```
+class myCurlExt extends myCurl
+    public function onParse($data) {
+        $args = array();
+        $data->title = escapeshellarg($data->title);
+        $args[] = "-subtitle {$data->title}";
+        return $args;
+    }
+}
+```
+
 That's it.
 
 #### Additional Info
