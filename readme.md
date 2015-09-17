@@ -75,13 +75,26 @@ Create a file ```~/Library/LaunchAgents/local.readmypo.plist```:
 </plist>
 ```
 
+Register above service to launchd so that the ```read``` command is automatically launched when you boot your machine.
+
 ```shell
 > launchctl bootstrap gui/$UID local.readmypo.plist
 > launchctl enable gui/$UID/local.readmypo
 > launchctl kickstart -k gui/$UID/local.readmypo
+```
 
-# If key has been changed:
+#### Additional Info
+
+If you have updated the .plist file, you need to do the following on Yosemite:
+
+```shell
 > launchctl unload local.readmypo.plist
 > launchctl bootstrap gui/$UID local.readmypo.plist
 > launchctl enable gui/$UID/local.readmypo
+```
+
+The following command kills the current process and re-run the ```read``` command:
+
+```shell
+launchctl kickstart -k gui/$UID/local.readmypo
 ```
