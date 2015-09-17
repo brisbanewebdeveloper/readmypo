@@ -119,8 +119,7 @@ class myCurlExt extends myCurl {
 }
 ```
 
-The Console Log says ```...php[12345]: Read My PO: Using custom class```  
-if it is using your ```myCurlExt``` class.
+The Console Log says ```...php[12345]: Read My PO: Using custom class``` when using your ```myCurlExt``` class.
 
 #### Additional Info
 
