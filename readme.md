@@ -8,7 +8,7 @@ This script requires [terminal-notifier](https://github.com/julienXX/terminal-no
 
 You can install it via [Homebrew](http://brew.sh/):
 ```
-> brew install terminal-notifier
+brew install terminal-notifier
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ You can install it via [Homebrew](http://brew.sh/):
 Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):
 
 ```shell
-> readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
+readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
 ```
 
 If it says "name: has already been taken", you need to delete the device at https://pushover.net/.
@@ -40,7 +40,7 @@ To read the message run "readmypo read 12e8a9s08e1sx <Device Name>"   <---- Use 
 Execute the following on terminal:
 
 ```shell
-> readmypo read <The key from previous Step> <Device Name>
+readmypo read <The key from previous Step> <Device Name>
 ```
 
 If you see nothing after waiting for about 10 seconds, you need to push something to your device.  
@@ -52,7 +52,7 @@ To finish the command you press Ctrl + C on terminal.
 #### Regsiter the command to keep running with launchd
 
 ```shell
-> cd ~/Library/LaunchAgents
+cd ~/Library/LaunchAgents
 ```
 
 Create a file ```~/Library/LaunchAgents/local.readmypo.plist```:
@@ -78,19 +78,23 @@ Create a file ```~/Library/LaunchAgents/local.readmypo.plist```:
 Register above service to launchd so that the ```read``` command is automatically launched when you boot your machine.
 
 ```shell
-> launchctl bootstrap gui/$UID local.readmypo.plist
-> launchctl enable gui/$UID/local.readmypo
-> launchctl kickstart -k gui/$UID/local.readmypo
+launchctl bootstrap gui/$UID local.readmypo.plist
+launchctl enable gui/$UID/local.readmypo
+launchctl kickstart -k gui/$UID/local.readmypo
 ```
+
+Open Console.app and keep eye on the process.  
+The log would start with ``````.
 
 #### Additional Info
 
 If you have updated the .plist file, you need to do the following on Yosemite:
 
 ```shell
-> launchctl unload local.readmypo.plist
-> launchctl bootstrap gui/$UID local.readmypo.plist
-> launchctl enable gui/$UID/local.readmypo
+launchctl unload local.readmypo.plist
+launchctl bootstrap gui/$UID local.readmypo.plist
+launchctl enable gui/$UID/local.readmypo
+launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
 The following command kills the current process and re-run the ```read``` command:
