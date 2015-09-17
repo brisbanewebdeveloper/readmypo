@@ -94,7 +94,7 @@ Example Log:
 
 #### I don't like how the message is shown
 
-This script checks if PHP script file ```~/bin/readmypo``` exists and apply ```require()``` if does.
+This script checks if PHP script file ```~/bin/readmypo``` exists and apply ```require()``` if it does.
 
 - Define the class ```myCurlExt``` extending the class ```myCurl```
 - Override the method ```parse()```
