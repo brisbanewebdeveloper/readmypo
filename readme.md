@@ -1,16 +1,16 @@
 # About readmypo
 
-This script requires other command "terminal-notifier". If you don't have it and have brew, do:
+This script requires other command "terminal-notifier".  
+If you don't have it and have brew do:  
 ```brew install terminal-notifier```
 
 ## Usage
 
-1.Register your device (your OSX machine).
-
-  Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):
-  ```shell
-  readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
-  ```
+```shell
+Register your device (your OSX machine).
+Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):
+> readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
+```
 
   If it says "name: has already been taken", you need to delete the device at https://pushover.net/.
 
