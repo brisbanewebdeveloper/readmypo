@@ -98,14 +98,14 @@ Example Log:
 This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if does.
 
 - Define the class ```myCurlExt``` extending the class ```myCurl```
-- Define the method ```onParse()```
+- Override the method ```parse()```
 - Return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array
 
 ```php
 <?php
 
 class myCurlExt extends myCurl {
-    public function onParse($data) {
+    public function parse($data) {
         $args = array();
         $data->message = escapeshellarg($data->message);
         $args[] = "-message {$data->message}"; // escapeshellarg() returns like 'abc 123'
