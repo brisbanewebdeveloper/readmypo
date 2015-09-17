@@ -83,13 +83,18 @@ launchctl enable gui/$UID/local.readmypo
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
-Open Console.app and keep eye on the process.
+Open Console.app and keep eye on it.
 
 Example Log:
 
 ```
 17/09/2015 8:54:10.567 pm php[24196]: Read My PO: /usr/local/bin/terminal-notifier -message 'Example message' -title 'Read MyPO' -open 'http://example.com/example-page.html' -subtitle 'http://example.com/example-page.html'
 ```
+
+#### I don't like how the message is shown
+
+This script checks if ```~/bin/readmypo``` exists and apply ```require``` if exists.  
+You extend the class ```myCurl```, define the method ```onParse()``` and return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array.
 
 #### Additional Info
 
