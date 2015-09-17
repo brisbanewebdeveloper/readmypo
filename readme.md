@@ -93,7 +93,7 @@ Example Log:
 
 #### I don't like how the message is shown
 
-This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if exists.
+This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if does.
 
 - Extend the class ```myCurl```
 - Define the method ```onParse()```
@@ -103,8 +103,14 @@ This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if e
 class myCurlExt extends myCurl
     public function onParse($data) {
         $args = array();
+        $data->message = escapeshellarg($data->message);
+        $args[] = "-message {$data->message}"; // escapeshellarg() returns like 'abc 123'
+        // Say, you always send "title" parameter
         $data->title = escapeshellarg($data->title);
         $args[] = "-subtitle {$data->title}";
+        if (isset($data->url)) {
+            $args[] = "-open '{$data->url}'";
+        }
         return $args;
     }
 }
