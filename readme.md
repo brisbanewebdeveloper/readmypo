@@ -28,7 +28,8 @@ The registered device can be seen at: https://pushover.net/
 
 The infomation gets encrypted and saved as ```~/Library/Application Support/readmypo/settings_<Device Name>.txt```.
 
-Example Output
+Example Output:
+
 ```shell
 Setting is saved to /Users/example/Library/Application Support/readmypo/settings_<Device Name>.txt
 To read the message run "readmypo read 12e8a9s08e1sx <Device Name>"   <---- Use this command for next step
