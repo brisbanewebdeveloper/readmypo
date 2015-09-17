@@ -26,8 +26,7 @@ If it says "name: has already been taken", you need to delete the device at http
 Above command registers your device and displays the command to read Pushover message.  
 The registered device can be seen at: https://pushover.net/
 
-The infomation gets encrypted and saved as:  
-~/Library/Application Support/readmypo/settings_<Device Name>.txt
+The infomation gets encrypted and saved as ```~/Library/Application Support/readmypo/settings_<Device Name>.txt```.
 
 Example Output
 ```shell
