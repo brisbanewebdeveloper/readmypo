@@ -1,6 +1,6 @@
 ## About readmypo
 
-This is PHP Command Line Script to read Pushover message via [Pushover API](https://pushover.net/api/client).
+This is PHP Command Line Script to read [Pushover](https://pushover.net/) message via [Pushover API](https://pushover.net/api/client).
 
 ## Requirements
 
