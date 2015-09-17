@@ -97,7 +97,7 @@ launchctl enable gui/$UID/local.readmypo
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
-The following command kills the current process and re-run the ```read``` command:
+The following command kills the current process and re-runs the ```read``` command:
 
 ```shell
 launchctl kickstart -k gui/$UID/local.readmypo
