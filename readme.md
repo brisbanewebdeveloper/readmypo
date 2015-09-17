@@ -5,7 +5,7 @@ This is PHP Command Line Script to read [Pushover](https://pushover.net/) messag
 ## Requirements
 
 This script requires [terminal-notifier](https://github.com/julienXX/terminal-notifier).  
-If you don't have it and have brew do:
+You can install via [Homebrew](http://brew.sh/):
 
 ```
 > brew install terminal-notifier
