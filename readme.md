@@ -23,7 +23,7 @@ Execute the following on terminal (Device Name can be anything like iMac, MacBoo
 
 If it says "name: has already been taken", you need to delete the device at https://pushover.net/.
 
-Above command registers your device and displays the command to read Pushover message.
+Above command registers your device and displays the command to read Pushover message.  
 The registered device can be seen at: https://pushover.net/
 
 The infomation gets encrypted and saved as:  
