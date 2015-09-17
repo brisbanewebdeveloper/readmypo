@@ -6,7 +6,8 @@ If you don't have it and have brew do:
 
 ## Usage
 
-Register your device (your OSX machine).
+#### Register your device (your OSX machine).
+
 Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):
 
 ```shell
