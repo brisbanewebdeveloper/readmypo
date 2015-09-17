@@ -138,6 +138,10 @@ The following command kills the current process and re-runs the ```read``` comma
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
+The following Gist let you send a message to your Pushover device
+
+- https://gist.github.com/hironozu/2b6d1d174dbb13f9ea3d
+
 ## Disclaimer
 
 readmypo is an unofficial Pushover Open Client, and that it is not released or supported by Superblock.
