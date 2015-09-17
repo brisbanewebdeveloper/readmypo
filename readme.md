@@ -1,8 +1,8 @@
 # This script is on development
 
-## About readmypo
+## About this script
 
-This is PHP Command Line Script to read [Pushover](https://pushover.net/) message via [Pushover API](https://pushover.net/api/client).
+This is PHP Command Line Script to read [Pushover](https://pushover.net/) message via [Pushover API](https://pushover.net/api/client) for OSX Environment.
 
 ## Requirements
 
@@ -45,8 +45,7 @@ Execute the following on terminal:
 readmypo read <The key from previous Step> <Device Name>
 ```
 
-If you see nothing after waiting for about 10 seconds, you need to push something to your device.  
-You can send a test message at: https://pushover.net/
+Send a test message at: https://pushover.net/
 
 This command never finishes.  
 To finish the command you press Ctrl + C on terminal.
@@ -95,15 +94,17 @@ Example Log:
 
 #### I don't like how the message is shown
 
-This script checks if ```~/bin/readmypo``` exists and apply ```require()``` if does.
+This script checks if PHP script file ```~/bin/readmypo``` exists and apply ```require()``` if does.
 
-- Extend the class ```myCurl```
-- Define the method ```onParse()```
+- Define the class ```myCurlExt``` extending the class ```myCurl```
+- Override the method ```parse()```
 - Return the command options for [terminal-notifier](https://github.com/julienXX/terminal-notifier) as Array
 
-```
-class myCurlExt extends myCurl
-    public function onParse($data) {
+```php
+<?php
+
+class myCurlExt extends myCurl {
+    public function parse($data) {
         $args = array();
         $data->message = escapeshellarg($data->message);
         $args[] = "-message {$data->message}"; // escapeshellarg() returns like 'abc 123'
@@ -136,3 +137,13 @@ The following command kills the current process and re-runs the ```read``` comma
 ```shell
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
+
+## So this is to receive the message for my OSX machine
+
+Yes, it is. And the following does opposite, sending the message.  
+
+[How to send a notification to Mac OSX computer from iOS device via Workflow and Pushover](https://gist.github.com/hironozu/2b6d1d174dbb13f9ea3d)
+
+## Disclaimer
+
+readmypo is an unofficial Pushover Open Client, and that it is not released or supported by Superblock.
