@@ -138,3 +138,7 @@ The following command kills the current process and re-runs the ```read``` comma
 ```shell
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
+
+## Disclaimer
+
+readmypo is an unofficial Pushover Open Client, and that it is not released or supported by Superblock.
