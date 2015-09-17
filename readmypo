@@ -3,8 +3,6 @@
 define('PROGRAM', 'Read My PO');
 syslog(LOG_NOTICE, PROGRAM . ': Boot Check');
 
-define('PATH',  $_SERVER['HOME'] . '/Library/Application Support/readmypo');
-
 Class myCurl {
 
     private $ch;
@@ -69,6 +67,22 @@ Class myCurl {
         return true;
     }
 
+    public function parse($data) {
+        $args = array();
+        $data->message = escapeshellarg($data->message);
+        $args[] = "-message {$data->message}";
+        if (isset($data->title)) {
+            $data->title = escapeshellarg($data->title);
+            $args[] = "-title {$data->title}";
+        } else {
+            $args[] = "-title 'Read MyPO'";
+        }
+        if (isset($data->url)) {
+            $args[] = "-open '{$data->url}'";
+            $args[] = "-subtitle '{$data->url}'";
+        }
+        return $args;
+    }
     public function read() {
 
         $url = "https://api.pushover.net/1/messages.json?secret={$this->secret}&device_id={$this->deviceId}";
@@ -86,19 +100,7 @@ Class myCurl {
             foreach ($result->messages as $index => $data) {
                 // Read Message
                 // var_dump($data);
-                $args = array();
-                $data->message = escapeshellarg($data->message);
-                $args[] = "-message {$data->message}";
-                if (isset($data->title)) {
-                    $data->title = escapeshellarg($data->title);
-                    $args[] = "-title {$data->title}";
-                } else {
-                    $args[] = "-title 'Read MyPO'";
-                }
-                if (isset($data->url)) {
-                    $args[] = "-open '{$data->url}'";
-                    $args[] = "-subtitle '{$data->url}'";
-                }
+                $args = $this->parse($data);
                 if (count($args)) {
                     syslog(LOG_NOTICE, PROGRAM . ': ' . '/usr/local/bin/terminal-notifier ' . implode(' ', $args));
                     exec('/usr/local/bin/terminal-notifier ' . implode(' ', $args));
@@ -131,7 +133,14 @@ function exitWithUsage($argv) {
 }
 if (empty($argv[1])) exitWithUsage($argv);
 
-$myCurl = new myCurl;
+$customClassFile = $_SERVER['HOME'] . '/bin/readmypo';
+if (file_exists($customClassFile)) {
+    syslog(LOG_NOTICE, PROGRAM . ': Using custom class');
+    require_once($customClassFile);
+    $myCurl = new myCurlExt;
+} else {
+    $myCurl = new myCurl;
+}
 
 switch ($argv[1]) {
     case 'register':
