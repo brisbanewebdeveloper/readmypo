@@ -53,8 +53,9 @@ To finish the command you press Ctrl + C on terminal.
 
 ```shell
 > cd ~/Library/LaunchAgents
-# Create a file ~/Library/LaunchAgents/local.readmypo.plist:
 ```
+
+Create a file ```~/Library/LaunchAgents/local.readmypo.plist```:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
