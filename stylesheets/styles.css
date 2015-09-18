@@ -95,11 +95,13 @@ img {
   max-width:100%;
 }
 
+/*
 header {
   width:270px;
   float:left;
   position:fixed;
 }
+*/
 
 header ul {
   list-style:none;
@@ -159,11 +161,13 @@ header ul a strong {
   color:#222;
 }
 
+/*
 section {
   width:500px;
   float:right;
   padding-bottom:50px;
 }
+*/
 
 small {
   font-size:11px;
@@ -176,12 +180,14 @@ hr {
   margin:0 0 20px;
 }
 
+/*
 footer {
   width:270px;
   float:left;
   position:fixed;
   bottom:50px;
 }
+*/
 
 @media print, screen and (max-width: 960px) {
 
