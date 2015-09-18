@@ -113,7 +113,7 @@ Example Log:
 
 #### I want to register multiple .plist because I use multiple devices
 
-Name the file as ```~/Library/LaunchAgents/local.readmypo-<Device Name>.plist```.
+Name the file as ```~/Library/LaunchAgents/local.readmypo-<Device Name>.plist```
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
