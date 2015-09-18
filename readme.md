@@ -73,8 +73,7 @@ To finish the command you press Ctrl + C on terminal.
 cd ~/Library/LaunchAgents
 ```
 
-Create a file ```~/Library/LaunchAgents/local.readmypo.plist```  
-(Name it as ```~/Library/LaunchAgents/local.readmypo[-<Device Name>].plist``` if you use multiple devices):
+Create a file ```~/Library/LaunchAgents/local.readmypo.plist```:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -108,6 +107,36 @@ Example Log:
 
 ```
 17/09/2015 8:54:10.567 pm php[24196]: Read My PO: /usr/local/bin/terminal-notifier -message 'Example message' -title 'Read MyPO' -open 'http://example.com/example-page.html' -subtitle 'http://example.com/example-page.html'
+```
+
+## FAQ
+
+#### I want to register multiple .plist because I use multiple devices
+
+Name the file as ```~/Library/LaunchAgents/local.readmypo-<Device Name>.plist```.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.readmypo-<REPLACE HERE TO YOUR DEVICE NAME></string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/readmypo</string>
+        <string>read</string>
+        <string><REPLACE HERE TO YOUR KEY></string>
+        <string><REPLACE HERE TO YOUR DEVICE NAME></string>
+    </array>
+</dict>
+</plist>
+```
+
+```shell
+launchctl bootstrap gui/$UID local.readmypo-<Device Name>.plist
+launchctl enable gui/$UID/local.readmypo-<Device Name>
+launchctl kickstart -k gui/$UID/local.readmypo-<Device Name>
 ```
 
 #### I don't like how the message is shown
