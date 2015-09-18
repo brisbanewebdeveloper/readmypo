@@ -4,7 +4,7 @@
 
 - PHP Command Line Script to read [Pushover](https://pushover.net/) Message via [Pushover Open Client API](https://pushover.net/api/client)
 
-## Install from GitHub (Working on it)
+## Install from GitHub
 
 This script requires [terminal-notifier](https://github.com/julienXX/terminal-notifier).
 
