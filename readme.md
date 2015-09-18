@@ -187,7 +187,7 @@ launchctl kickstart -k gui/$UID/local.readmypo
 
 ## Is this to receive the message for my OSX machine?
 
-Yes, it is. And the following does opposite, sending the message.  
+Yes, it is. I push messages from my iOS devices with URL to read it later at home as follows:
 
 [How to send a notification to Mac OSX computer from iOS device via Workflow and Pushover](https://gist.github.com/hironozu/2b6d1d174dbb13f9ea3d)
 
