@@ -3,7 +3,7 @@
 - Unofficial [Pushover](https://pushover.net/) Client
 - PHP Command Line Script to read [Pushover](https://pushover.net/) Message via [Pushover Open Client API](https://pushover.net/api/client) for OSX Environment
 
-## Requirements
+## Install from GitHub (Working on it)
 
 This script requires [terminal-notifier](https://github.com/julienXX/terminal-notifier).
 
@@ -11,6 +11,23 @@ You can install it via [Homebrew](http://brew.sh/):
 ```
 brew install terminal-notifier
 ```
+
+## Install via Homebrew (Not available at the moment)
+
+```
+brew install readmypo
+```
+
+## Uninstall
+
+```
+brew uninstall readmypo
+```
+
+Delete the followings if exists:
+
+- ```~/Library/Application Support/readmypo/settings_<Device Name>.txt```
+- ```~/Library/LaunchAgents/local.readmypo[-<Device Name>].plist```
 
 ## Usage
 
@@ -56,7 +73,7 @@ To finish the command you press Ctrl + C on terminal.
 cd ~/Library/LaunchAgents
 ```
 
-Create a file ```~/Library/LaunchAgents/local.readmypo.plist```:
+Create a file ```~/Library/LaunchAgents/local.readmypo.plist``` (```~/Library/LaunchAgents/local.readmypo[-<Device Name>].plist```):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
