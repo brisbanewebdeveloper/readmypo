@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>readmypo by hironozu</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>readmypo</h1>
+        <p>Unofficial Pushover Client for OSX (Command Line)</p>
+
+        <p class="view"><a href="https://github.com/hironozu/readmypo">View the Project on GitHub <small>hironozu/readmypo</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/hironozu/readmypo/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hironozu/readmypo/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hironozu/readmypo">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a id="about-this-script" class="anchor" href="#about-this-script" aria-hidden="true"><span class="octicon octicon-link"></span></a>About this script</h2>
+
+<ul>
+<li><p>Unofficial <a href="https://pushover.net/">Pushover</a> Client for OSX Environment</p></li>
+<li><p>PHP Command Line Script to read <a href="https://pushover.net/">Pushover</a> Message via <a href="https://pushover.net/api/client">Pushover Open Client API</a></p></li>
+</ul>
+
+<h2>
+<a id="install-from-github" class="anchor" href="#install-from-github" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install from GitHub</h2>
+
+<p>This script requires <a href="https://github.com/julienXX/terminal-notifier">terminal-notifier</a>.</p>
+
+<p>You can install it via <a href="http://brew.sh/">Homebrew</a>:</p>
+
+<pre><code>brew install terminal-notifier
+</code></pre>
+
+<h2>
+<a id="install-via-homebrew-not-available-at-the-moment" class="anchor" href="#install-via-homebrew-not-available-at-the-moment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install via Homebrew (Not available at the moment)</h2>
+
+<pre><code>brew install readmypo
+</code></pre>
+
+<h2>
+<a id="uninstall" class="anchor" href="#uninstall" aria-hidden="true"><span class="octicon octicon-link"></span></a>Uninstall</h2>
+
+<pre><code>brew uninstall readmypo
+</code></pre>
+
+<p>Delete the followings if exists:</p>
+
+<ul>
+<li><code>~/Library/Application Support/readmypo/settings_&lt;Device Name&gt;.txt</code></li>
+<li><code>~/Library/LaunchAgents/local.readmypo[-&lt;Device Name&gt;].plist</code></li>
+</ul>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a id="register-your-device-your-osx-machine" class="anchor" href="#register-your-device-your-osx-machine" aria-hidden="true"><span class="octicon octicon-link"></span></a>Register your device (your OSX machine)</h4>
+
+<p>Execute the following on terminal (Device Name can be anything like iMac, MacBookPro or MyMacPro):</p>
+
+<div class="highlight highlight-source-shell"><pre>readmypo register <span class="pl-k">&lt;</span>Email <span class="pl-k">for</span> <span class="pl-smi">Pushover</span><span class="pl-k">&gt;</span> <span class="pl-k">&lt;</span>Password <span class="pl-k">for</span> <span class="pl-smi">Pushover</span><span class="pl-k">&gt;</span> <span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span></pre></div>
+
+<p>If it says "name: has already been taken", you need to delete the device at <a href="https://pushover.net/">https://pushover.net/</a>.</p>
+
+<p>Above command registers your device and displays the command to read Pushover message.<br>
+The registered device can be seen at: <a href="https://pushover.net/">https://pushover.net/</a></p>
+
+<p>The infomation gets encrypted and saved as:<br>
+<code>~/Library/Application Support/readmypo/settings_&lt;Device Name&gt;.txt</code></p>
+
+<p>Example Output:</p>
+
+<div class="highlight highlight-source-shell"><pre>Setting is saved to /Users/example/Library/Application Support/readmypo/settings_<span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span>.txt
+To <span class="pl-c1">read</span> the message run <span class="pl-s"><span class="pl-pds">"</span>readmypo read 12e8a9s08e1sx &lt;Device Name&gt;<span class="pl-pds">"</span></span>   <span class="pl-k">&lt;</span>---- Use this <span class="pl-c1">command</span> <span class="pl-k">for</span> <span class="pl-smi">next</span> step</pre></div>
+
+<h4>
+<a id="test-if-this-script-can-read-the-message" class="anchor" href="#test-if-this-script-can-read-the-message" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test if this script can read the message</h4>
+
+<p>Execute the following on terminal:</p>
+
+<div class="highlight highlight-source-shell"><pre>readmypo <span class="pl-c1">read</span> <span class="pl-k">&lt;</span>The key from previous Step<span class="pl-k">&gt;</span> <span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span></pre></div>
+
+<p>Send a test message at: <a href="https://pushover.net/">https://pushover.net/</a></p>
+
+<p>This command never finishes.<br>
+To finish the command you press Ctrl + C on terminal.</p>
+
+<h4>
+<a id="regsiter-the-command-to-keep-running-with-launchd" class="anchor" href="#regsiter-the-command-to-keep-running-with-launchd" aria-hidden="true"><span class="octicon octicon-link"></span></a>Regsiter the command to keep running with launchd</h4>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> <span class="pl-k">~</span>/Library/LaunchAgents</pre></div>
+
+<p>Create a file <code>~/Library/LaunchAgents/local.readmypo.plist</code>:</p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;!<span class="pl-k">DOCTYPE</span> <span class="pl-v">plist</span> PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;<span class="pl-ent">plist</span> <span class="pl-e">version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">dict</span>&gt;
+    &lt;<span class="pl-ent">key</span>&gt;Label&lt;/<span class="pl-ent">key</span>&gt;
+    &lt;<span class="pl-ent">string</span>&gt;local.readmypo&lt;/<span class="pl-ent">string</span>&gt;
+    &lt;<span class="pl-ent">key</span>&gt;ProgramArguments&lt;/<span class="pl-ent">key</span>&gt;
+    &lt;<span class="pl-ent">array</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;/usr/local/bin/readmypo&lt;/<span class="pl-ent">string</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;read&lt;/<span class="pl-ent">string</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;&lt;<span class="pl-ent">REPLACE</span> HERE TO YOUR KEY&gt;&lt;/<span class="pl-ent">string</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;&lt;<span class="pl-ent">REPLACE</span> HERE TO YOUR DEVICE NAME&gt;&lt;/<span class="pl-ent">string</span>&gt;
+    &lt;/<span class="pl-ent">array</span>&gt;
+&lt;/<span class="pl-ent">dict</span>&gt;
+&lt;/<span class="pl-ent">plist</span>&gt;</pre></div>
+
+<p>Register above service to launchd so that the <code>read</code> command is automatically launched when you boot your machine.</p>
+
+<div class="highlight highlight-source-shell"><pre>launchctl bootstrap gui/<span class="pl-smi">$UID</span> <span class="pl-k">local</span>.readmypo.plist
+launchctl <span class="pl-c1">enable</span> gui/<span class="pl-smi">$UID</span>/local.readmypo
+launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo</pre></div>
+
+<p>Open Console.app and keep eye on it.</p>
+
+<p>Example Log:</p>
+
+<pre><code>17/09/2015 8:54:10.567 pm php[24196]: Read My PO: /usr/local/bin/terminal-notifier -message 'Example message' -title 'Read MyPO' -open 'http://example.com/example-page.html' -subtitle 'http://example.com/example-page.html'
+</code></pre>
+
+<h2>
+<a id="faq" class="anchor" href="#faq" aria-hidden="true"><span class="octicon octicon-link"></span></a>FAQ</h2>
+
+<h4>
+<a id="i-want-to-register-multiple-plist-because-i-use-multiple-devices" class="anchor" href="#i-want-to-register-multiple-plist-because-i-use-multiple-devices" aria-hidden="true"><span class="octicon octicon-link"></span></a>I want to register multiple .plist because I use multiple devices</h4>
+
+<p>Name the file as <code>~/Library/LaunchAgents/local.readmypo-&lt;Device Name&gt;.plist</code></p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;!<span class="pl-k">DOCTYPE</span> <span class="pl-v">plist</span> PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;<span class="pl-ent">plist</span> <span class="pl-e">version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">dict</span>&gt;
+    &lt;<span class="pl-ent">key</span>&gt;Label&lt;/<span class="pl-ent">key</span>&gt;
+    &lt;<span class="pl-ent">string</span>&gt;local.readmypo-&lt;<span class="pl-ent">REPLACE</span> HERE TO YOUR DEVICE NAME&gt;&lt;/<span class="pl-ent">string</span>&gt;
+    &lt;<span class="pl-ent">key</span>&gt;ProgramArguments&lt;/<span class="pl-ent">key</span>&gt;
+    &lt;<span class="pl-ent">array</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;/usr/local/bin/readmypo&lt;/<span class="pl-ent">string</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;read&lt;/<span class="pl-ent">string</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;&lt;<span class="pl-ent">REPLACE</span> HERE TO YOUR KEY&gt;&lt;/<span class="pl-ent">string</span>&gt;
+        &lt;<span class="pl-ent">string</span>&gt;&lt;<span class="pl-ent">REPLACE</span> HERE TO YOUR DEVICE NAME&gt;&lt;/<span class="pl-ent">string</span>&gt;
+    &lt;/<span class="pl-ent">array</span>&gt;
+&lt;/<span class="pl-ent">dict</span>&gt;
+&lt;/<span class="pl-ent">plist</span>&gt;</pre></div>
+
+<div class="highlight highlight-source-shell"><pre>launchctl bootstrap gui/<span class="pl-smi">$UID</span> <span class="pl-k">local</span>.readmypo-<span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span>.plist
+launchctl <span class="pl-c1">enable</span> gui/<span class="pl-smi">$UID</span>/local.readmypo-<span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span>
+launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo-<span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span></pre></div>
+
+<h4>
+<a id="i-dont-like-how-the-message-is-shown" class="anchor" href="#i-dont-like-how-the-message-is-shown" aria-hidden="true"><span class="octicon octicon-link"></span></a>I don't like how the message is shown</h4>
+
+<p>This script checks if PHP script file <code>~/bin/readmypo</code> exists and apply <code>require()</code> if it does.</p>
+
+<ul>
+<li>Define the class <code>myCurlExt</code> extending the class <code>myCurl</code>
+</li>
+<li>Override the method <code>parse()</code>
+</li>
+<li>Return the command options for <a href="https://github.com/julienXX/terminal-notifier">terminal-notifier</a> as Array</li>
+</ul>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">myCurlExt</span> <span class="pl-k">extends</span> <span class="pl-e">myCurl</span> {</span>
+<span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">parse</span>(<span class="pl-smi">$data</span>) {</span>
+<span class="pl-s1">        <span class="pl-smi">$args</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>();</span>
+<span class="pl-s1">        <span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">message</span> <span class="pl-k">=</span> <span class="pl-c1">escapeshellarg</span>(<span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">message</span>);</span>
+<span class="pl-s1">        <span class="pl-smi">$args</span>[] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>-message {<span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">message</span>}<span class="pl-pds">"</span></span>; <span class="pl-c">// escapeshellarg() returns like 'abc 123'</span></span>
+<span class="pl-s1">        <span class="pl-c">// Say, you always send "title" parameter</span></span>
+<span class="pl-s1">        <span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">title</span> <span class="pl-k">=</span> <span class="pl-c1">escapeshellarg</span>(<span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">title</span>);</span>
+<span class="pl-s1">        <span class="pl-smi">$args</span>[] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>-subtitle {<span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">title</span>}<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1">        <span class="pl-k">if</span> (<span class="pl-c1">isset</span>(<span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">url</span>)) {</span>
+<span class="pl-s1">            <span class="pl-smi">$args</span>[] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>-open '{<span class="pl-smi">$data</span><span class="pl-k">-&gt;</span><span class="pl-smi">url</span>}'<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1">        }</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$args</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">}</span></pre></div>
+
+<p>The Console Log says <code>Read My PO: Using custom class</code> when using your <code>myCurlExt</code> class.</p>
+
+<h4>
+<a id="additional-info" class="anchor" href="#additional-info" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional Info</h4>
+
+<p>If you have updated the .plist file, you need to do the following on Yosemite:</p>
+
+<div class="highlight highlight-source-shell"><pre>launchctl unload <span class="pl-k">local</span>.readmypo.plist
+launchctl bootstrap gui/<span class="pl-smi">$UID</span> <span class="pl-k">local</span>.readmypo.plist
+launchctl <span class="pl-c1">enable</span> gui/<span class="pl-smi">$UID</span>/local.readmypo
+launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo</pre></div>
+
+<p>The following command kills the current process and re-runs the <code>read</code> command:</p>
+
+<div class="highlight highlight-source-shell"><pre>launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo</pre></div>
+
+<h2>
+<a id="is-this-to-receive-the-message-for-my-osx-machine" class="anchor" href="#is-this-to-receive-the-message-for-my-osx-machine" aria-hidden="true"><span class="octicon octicon-link"></span></a>Is this to receive the message for my OSX machine?</h2>
+
+<p>Yes, it is. I push messages from my iOS devices with URL to read it later at home as follows:</p>
+
+<p><a href="https://gist.github.com/hironozu/2b6d1d174dbb13f9ea3d">How to send a notification to Mac OSX computer from iOS device via Workflow and Pushover</a></p>
+
+<h2>
+<a id="disclaimer" class="anchor" href="#disclaimer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disclaimer</h2>
+
+<p>readmypo is an unofficial Pushover Open Client, and that it is not released or supported by Superblock.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hironozu">hironozu</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-39856458-7");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
