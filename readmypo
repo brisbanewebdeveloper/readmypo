@@ -127,6 +127,7 @@ Class myCurl {
 
 
 function exitWithUsage($argv) {
+    echo "https://github.com/hironozu/readmypo\n";
     echo "Usage 1: {$argv[0]} register <email> <password> <device_name>\n";
     echo "Usage 2: {$argv[0]} read <key> <device_name>\n";
     exit;
