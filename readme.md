@@ -73,7 +73,8 @@ To finish the command you press Ctrl + C on terminal.
 cd ~/Library/LaunchAgents
 ```
 
-Create a file ```~/Library/LaunchAgents/local.readmypo.plist``` (```~/Library/LaunchAgents/local.readmypo[-<Device Name>].plist```):
+Create a file ```~/Library/LaunchAgents/local.readmypo.plist```  
+(Name it as ```~/Library/LaunchAgents/local.readmypo[-<Device Name>].plist``` if you use multiple devices):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
