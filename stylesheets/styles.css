@@ -41,7 +41,6 @@ a {
 a small {
   font-size:11px;
   color:#777;
-  margin-top:-0.6em;
   display:block;
 }
 
@@ -107,6 +106,9 @@ header ul {
   list-style:none;
   height:40px;
 
+  float:left;
+  margin-right:10px;
+
   padding:0;
 
   background: #eee;
@@ -137,10 +139,12 @@ header ul a {
   display:block;
   text-align:center;
   padding-top:6px;
-  height:40px;
+  height:34px;
 }
 
 #sharethis-wrapper {
+  float: left;
+  margin-top: 5px;
   padding-bottom: 10px;
 }
 #sharethis-wrapper span {
@@ -191,15 +195,17 @@ header ul a strong {
   font-size:14px;
   display:block;
   color:#222;
+  line-height:20px;
 }
 
-/*
 section {
+/*
   width:500px;
   float:right;
   padding-bottom:50px;
-}
 */
+  clear: both;
+}
 
 small {
   font-size:11px;
@@ -247,6 +253,7 @@ footer {
 
   header a small {
     display:inline;
+    padding-left:4px;
   }
 
   header ul {
