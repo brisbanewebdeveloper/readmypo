@@ -140,6 +140,38 @@ header ul a {
   height:40px;
 }
 
+#sharethis-wrapper {
+  padding-bottom: 10px;
+}
+#sharethis-wrapper span {
+  display: inline-block;
+  line-height: 30px;
+}
+#sharethis-wrapper span,
+#sharethis-wrapper div {
+  bottom: auto !important;
+  vertical-align: middle !important;
+  margin: 0 !important;
+}
+.stButton .sharethis {
+  line-height: normal !important;
+}
+.st_fbsend_large span {
+  line-height: normal !important;
+}
+#sharethis-wrapper .st_fbsend_large div {
+  line-height: 20px !important;
+}
+#sharethis-wrapper .st_fbsend_large div span {
+  vertical-align: top !important;
+}
+.st_fbsend_large iframe {
+  min-width: 52px !important;
+  min-height: 20px !important;
+  width: 0;
+  height: 0;
+}
+
 strong {
   color:#222;
   font-weight:700;
