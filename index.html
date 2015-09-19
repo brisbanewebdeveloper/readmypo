@@ -18,13 +18,13 @@
         <h1>readmypo</h1>
         <p>Unofficial Pushover Client for OSX (Command Line)</p>
 
-        <p class="view"><a href="https://github.com/hironozu/readmypo">View the Project on GitHub <small>hironozu/readmypo</small></a></p>
+        <p class="view"><a id="view-project-top-1" href="https://github.com/hironozu/readmypo">View the Project on GitHub <small>hironozu/readmypo</small></a></p>
 
 
         <ul>
           <li><a href="https://github.com/hironozu/readmypo/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/hironozu/readmypo/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/hironozu/readmypo">View On <strong>GitHub</strong></a></li>
+          <li><a id="view-project-top-2" href="https://github.com/hironozu/readmypo">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
@@ -32,14 +32,14 @@
 <a id="about-this-script" class="anchor" href="#about-this-script" aria-hidden="true"><span class="octicon octicon-link"></span></a>About this script</h2>
 
 <ul>
-<li><p>Unofficial <a href="https://pushover.net/">Pushover</a> Client for OSX Environment</p></li>
-<li><p>PHP Command Line Script to read <a href="https://pushover.net/">Pushover</a> Message via <a href="https://pushover.net/api/client">Pushover Open Client API</a></p></li>
+<li><p>Unofficial <a id="pushover-1" href="https://pushover.net/">Pushover</a> Client for OSX Environment</p></li>
+<li><p>PHP Command Line Script to read <a id="pushover-2" href="https://pushover.net/">Pushover</a> Message via <a href="https://pushover.net/api/client">Pushover Open Client API</a></p></li>
 </ul>
 
 <h2>
 <a id="install-from-github" class="anchor" href="#install-from-github" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install from GitHub</h2>
 
-<p>This script requires <a href="https://github.com/julienXX/terminal-notifier">terminal-notifier</a>.</p>
+<p>This script requires <a id="terminal-notifier-1" href="https://github.com/julienXX/terminal-notifier">terminal-notifier</a>.</p>
 
 <p>You can install it via <a href="http://brew.sh/">Homebrew</a>:</p>
 
@@ -75,10 +75,10 @@
 
 <div class="highlight highlight-source-shell"><pre>readmypo register <span class="pl-k">&lt;</span>Email <span class="pl-k">for</span> <span class="pl-smi">Pushover</span><span class="pl-k">&gt;</span> <span class="pl-k">&lt;</span>Password <span class="pl-k">for</span> <span class="pl-smi">Pushover</span><span class="pl-k">&gt;</span> <span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span></pre></div>
 
-<p>If it says "name: has already been taken", you need to delete the device at <a href="https://pushover.net/">https://pushover.net/</a>.</p>
+<p>If it says "name: has already been taken", you need to delete the device at <a id="pushover-3" href="https://pushover.net/">https://pushover.net/</a>.</p>
 
 <p>Above command registers your device and displays the command to read Pushover message.<br>
-The registered device can be seen at: <a href="https://pushover.net/">https://pushover.net/</a></p>
+The registered device can be seen at: <a id="pushover-4" href="https://pushover.net/">https://pushover.net/</a></p>
 
 <p>The infomation gets encrypted and saved as:<br>
 <code>~/Library/Application Support/readmypo/settings_&lt;Device Name&gt;.txt</code></p>
@@ -95,7 +95,7 @@ To <span class="pl-c1">read</span> the message run <span class="pl-s"><span clas
 
 <div class="highlight highlight-source-shell"><pre>readmypo <span class="pl-c1">read</span> <span class="pl-k">&lt;</span>The key from previous Step<span class="pl-k">&gt;</span> <span class="pl-k">&lt;</span>Device Name<span class="pl-k">&gt;</span></pre></div>
 
-<p>Send a test message at: <a href="https://pushover.net/">https://pushover.net/</a></p>
+<p>Send a test message at: <a id="pushover-5" href="https://pushover.net/">https://pushover.net/</a></p>
 
 <p>This command never finishes.<br>
 To finish the command you press Ctrl + C on terminal.</p>
@@ -174,7 +174,7 @@ launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo-<span
 </li>
 <li>Override the method <code>parse()</code>
 </li>
-<li>Return the command options for <a href="https://github.com/julienXX/terminal-notifier">terminal-notifier</a> as Array</li>
+<li>Return the command options for <a id="terminal-notifier-2" href="https://github.com/julienXX/terminal-notifier">terminal-notifier</a> as Array</li>
 </ul>
 
 <div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
@@ -224,7 +224,7 @@ launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo</pre>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/hironozu">hironozu</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small> (Theme has been amended)</p>
       </footer>
     </div>
     <script>
@@ -234,6 +234,7 @@ launchctl kickstart -k gui/<span class="pl-smi">$UID</span>/local.readmypo</pre>
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
       ga('create', 'UA-67830824-1', 'auto');
+      ga('require', 'linkid');
       ga('send', 'pageview');
     </script>
   </body>
