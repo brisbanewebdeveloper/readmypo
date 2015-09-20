@@ -223,25 +223,10 @@ switch ($argv[1]) {
             exit;
         }
 
-        $path = $myCurl->getSettingPath();
-        if ( ! file_exists($path)) mkdir($path, 0755, true);
-        $data = array(
-            'secret' => $myCurl->secret,
-            'device_id' => $myCurl->deviceId,
-        );
-
-
-        $key = uniqid();
-        $setting = json_encode($data);
-
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key,
-                                     $setting, MCRYPT_MODE_CBC, $iv);
-        $ciphertext = $iv . $ciphertext;
-        $ciphertext_base64 = base64_encode($ciphertext);
-
-        file_put_contents($filename, $ciphertext_base64);
+        $setting = new stdClass;
+        $setting->secret = $myCurl->secret;
+        $setting->device_id = $myCurl->deviceId;
+        $key = $myCurl->saveSetting($setting, $deviceName);
 
         echo "Setting is saved to {$filename}\n";
         echo "To read the message run \"readmypo read {$key} {$deviceName}\"\n";
