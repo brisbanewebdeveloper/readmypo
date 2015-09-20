@@ -17,7 +17,53 @@ Class myCurl {
     public $setting;
 
 
-    public function __construct() {
+    public function open() {
+        $this->ch = curl_init();
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+    }
+    public function close() {
+        curl_close($this->ch);
+    }
+
+    public function getHomeDirectory() {
+        return $_SERVER['HOME'];
+    }
+    public function getSettingPath() {
+        return $this->getHomeDirectory() . '/Library/Application Support/readmypo';
+    }
+    public function getSettingFilename($deviceName) {
+        return $this->getSettingPath() . "/settings_{$deviceName}.txt";
+    }
+
+    public function getExtensions($regex, $property, $dir, $f) {
+
+        static $appliedSetting = array();
+
+        $function_name = str_replace('.inc', '', $f);
+        if (preg_match('#^'.$regex.'.+\.inc$#', $f)) {
+            require($dir . DIRECTORY_SEPARATOR . $f);
+            if (function_exists($function_name)) {
+                $this->{$property}[] = $function_name;
+            } else {
+                echo "Found file {$f} but function {$function_name} not found\n";
+                syslog(LOG_NOTICE, PROGRAM . ": Found file {$f} but function {$function_name} not found");
+            }
+        }
+
+        // Load Setting
+        $function_name = $function_name . 'ReadSetting';
+        if ( ! in_array($function_name, $appliedSetting)) {
+            $appliedSetting[] = $function_name;
+            if (function_exists($function_name)) $function_name($this);
+        }
+    }
+    public function getPlugins($dir, $f) {
+        $this->getExtensions('plugin', 'plugins', $dir, $f);
+    }
+    public function getCommands($dir, $f) {
+        $this->getExtensions('command', 'commands', $dir, $f);
+    }
+    public function readExtensionSetting() {
         $dir = '/usr/local/bin/readmypo-plugins';
         if (file_exists($dir)) {
             $files = scandir($dir);
@@ -29,40 +75,6 @@ Class myCurl {
             }
         }
     }
-    public function getExtensions($regex, $property, $dir, $f) {
-        if (preg_match('#^'.$regex.'.+\.inc$#', $f)) {
-            require($dir . DIRECTORY_SEPARATOR . $f);
-            $function_name = str_replace('.inc', '', $f);
-            if (function_exists($function_name)) {
-                $this->{$property}[] = $function_name;
-            } else {
-                echo "Found file {$f} but function {$function_name} not found\n";
-                syslog(LOG_NOTICE, PROGRAM . ": Found file {$f} but function {$function_name} not found");
-            }
-        }
-    }
-    public function getPlugins($dir, $f) {
-        $this->getExtensions('plugin', 'plugins', $dir, $f);
-    }
-    public function getCommands($dir, $f) {
-        $this->getExtensions('command', 'commands', $dir, $f);
-    }
-
-    public function open() {
-        $this->ch = curl_init();
-        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
-    }
-    public function close() {
-        curl_close($this->ch);
-    }
-
-    public function getSettingPath() {
-        return $_SERVER['HOME'] . '/Library/Application Support/readmypo';
-    }
-    public function getSettingFilename($deviceName) {
-        return $this->getSettingPath() . "/settings_{$deviceName}.txt";
-    }
-
     public function readSetting($filename, $key) {
         $ciphertext_dec = base64_decode(file_get_contents($filename));
         $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
@@ -78,8 +90,9 @@ Class myCurl {
             return false;
         } else {
             foreach ($this->setting as $key => $value) {
-              $this->$key = $this->setting->$key;
+                $this->$key = $this->setting->$key;
             }
+            $this->readExtensionSetting();
             return true;
         }
     }
@@ -182,6 +195,9 @@ Class myCurl {
             foreach ($result->messages as $index => $data) {
                 // Read Message
                 // var_dump($data);
+                // Call Plugins
+                foreach ($this->plugins as $function_name) $function_name($this, $data);
+                // ------------
                 $args = $this->parse($data);
                 if (count($args)) {
                     syslog(LOG_NOTICE, PROGRAM . ': ' . '/usr/local/bin/terminal-notifier ' . implode(' ', $args));
