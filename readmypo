@@ -11,6 +11,7 @@ Class myCurl {
     public $secret;
     public $deviceId;
     public $messages = array();
+    public $setting;
 
     public function open() {
         $this->ch = curl_init();
@@ -25,6 +26,49 @@ Class myCurl {
     }
     public function getSettingFilename($deviceName) {
         return $this->getSettingPath() . "/settings_{$deviceName}.txt";
+    }
+
+    public function readSetting($filename, $key) {
+        $ciphertext_dec = base64_decode(file_get_contents($filename));
+        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+        $iv_dec = substr($ciphertext_dec, 0, $iv_size);
+        $ciphertext_dec = substr($ciphertext_dec, $iv_size);
+        $plaintext_dec = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key,
+                                        $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+
+        $this->setting = json_decode($plaintext_dec);
+        if (is_null($this->setting)) {
+            echo "Setting file is broken or key is incorrect\n";
+            syslog(LOG_NOTICE, PROGRAM . ': Setting file is broken or key is incorrect');
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public function saveSetting($setting, $deviceName, $key = null) {
+
+        $path = $this->getSettingPath();
+        if ( ! file_exists($path)) mkdir($path, 0755, true);
+
+        $data = array(
+            'secret' => $setting->secret,
+            'device_id' => $setting->device_id,
+        );
+
+        if (is_null($key)) $key = uniqid();
+        $setting = json_encode($data);
+
+        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+        $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key,
+                                     $setting, MCRYPT_MODE_CBC, $iv);
+        $ciphertext = $iv . $ciphertext;
+        $ciphertext_base64 = base64_encode($ciphertext);
+
+        $filename = $this->getSettingFilename($deviceName);
+        file_put_contents($filename, $ciphertext_base64);
+
+        return $key;
     }
 
     public function showErrors() {
@@ -267,6 +311,52 @@ switch ($argv[1]) {
             $myCurl->close();
             sleep(6);
         }
+
+        break;
+
+    case 'export':
+
+        if (empty($argv[2])) {
+            echo "Key is missing\n";
+            exit;
+        } else {
+            $key = $argv[2];
+        }
+        if (empty($argv[3])) {
+            echo "Device Name is missing\n";
+            exit;
+        } else {
+            $deviceName = $argv[3];
+        }
+
+        $filename = $myCurl->getSettingFilename($deviceName);
+        if ($myCurl->readSetting($filename, $key)) {
+            $settingEncoded = base64_encode(json_encode($myCurl->setting));
+            echo "Import this: {$settingEncoded}\n";
+        }
+
+        break;
+
+    case 'import':
+
+        if (empty($argv[2])) {
+            echo "Encoded Setting is missing\n";
+            exit;
+        } else {
+            $settingEncoded = $argv[2];
+        }
+        if (empty($argv[3])) {
+            echo "Device Name is missing\n";
+            exit;
+        } else {
+            $deviceName = $argv[3];
+        }
+        $key = empty($argv[4]) ? null : $argv[4];
+
+        $setting = json_decode(base64_decode($settingEncoded));
+        $key = $myCurl->saveSetting($setting, $deviceName, $key);
+        echo "Setting has been imported\n";
+        echo "To read the message run \"readmypo read {$key} {$deviceName}\"\n";
 
         break;
 
