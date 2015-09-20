@@ -8,10 +8,45 @@ Class myCurl {
     private $ch;
     private $errors = array();
 
+    public $commands = array();
+    public $plugins = array();
+
     public $secret;
     public $device_id;
     public $messages = array();
     public $setting;
+
+
+    public function __construct() {
+        $dir = '/usr/local/bin/readmypo-plugins';
+        if (file_exists($dir)) {
+            $files = scandir($dir);
+            if (count($files)) {
+                foreach ($files as $f) {
+                    $this->getPlugins($dir, $f);
+                    $this->getCommands($dir, $f);
+                }
+            }
+        }
+    }
+    public function getExtensions($regex, $property, $dir, $f) {
+        if (preg_match('#^'.$regex.'.+\.inc$#', $f)) {
+            require($dir . DIRECTORY_SEPARATOR . $f);
+            $function_name = str_replace('.inc', '', $f);
+            if (function_exists($function_name)) {
+                $this->{$property}[] = $function_name;
+            } else {
+                echo "Found file {$f} but function {$function_name} not found\n";
+                syslog(LOG_NOTICE, PROGRAM . ": Found file {$f} but function {$function_name} not found");
+            }
+        }
+    }
+    public function getPlugins($dir, $f) {
+        $this->getExtensions('plugin', 'plugins', $dir, $f);
+    }
+    public function getCommands($dir, $f) {
+        $this->getExtensions('command', 'commands', $dir, $f);
+    }
 
     public function open() {
         $this->ch = curl_init();
