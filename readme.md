@@ -130,6 +130,10 @@ Name the file as ```~/Library/LaunchAgents/local.readmypo-<Device Name>.plist```
         <string><REPLACE HERE TO YOUR KEY></string>
         <string><REPLACE HERE TO YOUR DEVICE NAME></string>
     </array>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>KeepAlive</key>
+	<true/>
 </dict>
 </plist>
 ```
