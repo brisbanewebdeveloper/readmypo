@@ -4,6 +4,16 @@
 
 - PHP Command Line Script to read [Pushover](https://pushover.net/) Message via [Pushover Open Client API](https://pushover.net/api/client)
 
+## Preparation
+
+This script uses PHP Extension to encrypt your pushover information.
+
+You need to do the followings at first:
+
+- Download PHP and extract the compressed file (No need to do ```configure``` or ```make install```).
+- Compile ```mcrypt``` extension (No need to install; Just compile with ```phpize```, ```configure``` and ```make```).
+- Create ```/etc/php.ini``` and put ```extension=<Full Path for the above extension>```
+
 ## Install from GitHub
 
 This script requires [terminal-notifier](https://github.com/julienXX/terminal-notifier).
