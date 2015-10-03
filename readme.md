@@ -12,7 +12,8 @@ You need to do the followings at first:
 
 - Download PHP and extract the compressed file (No need to do ```configure``` or ```make install```).
 - Compile ```mcrypt``` extension (No need to install; Just compile with ```phpize```, ```configure``` and ```make```).
-- Create ```/etc/php.ini``` and put ```extension=<Full Path for the above extension>```
+- Create ```/etc/php.ini``` and put ```extension=<Full Path for the above extension>```  
+  Example: ```extension=/usr/local/src/php-5.5.27/ext/mcrypt/modules/mcrypt.so```
 
 ## Install from GitHub
 
