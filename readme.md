@@ -110,6 +110,8 @@ Register above service to launchd so that the ```read``` command is automaticall
 ```shell
 launchctl bootstrap gui/$UID local.readmypo.plist
 launchctl enable gui/$UID/local.readmypo
+# You need to run the following command to run readmypo.
+# If you saw readmypo not receiving the notification later, you run this command again.
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
