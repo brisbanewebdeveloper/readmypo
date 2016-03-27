@@ -4,6 +4,17 @@
 
 - PHP Command Line Script to read [Pushover](https://pushover.net/) Message via [Pushover Open Client API](https://pushover.net/api/client)
 
+## Preparation
+
+This script uses PHP Extension to encrypt your pushover information.
+
+You need to do the followings at first:
+
+- Download PHP and extract the compressed file (No need to do ```configure``` or ```make install```).
+- Compile ```mcrypt``` extension (No need to install; Just compile with ```phpize```, ```configure``` and ```make```).
+- Create ```/etc/php.ini``` and put ```extension=<Full Path for the above extension>```  
+  Example: ```extension=/usr/local/src/php-5.5.27/ext/mcrypt/modules/mcrypt.so```
+
 ## Install from GitHub
 
 This script requires [terminal-notifier](https://github.com/julienXX/terminal-notifier).
@@ -99,6 +110,8 @@ Register above service to launchd so that the ```read``` command is automaticall
 ```shell
 launchctl bootstrap gui/$UID local.readmypo.plist
 launchctl enable gui/$UID/local.readmypo
+# You need to run the following command to run readmypo.
+# If you saw readmypo not receiving the notification later, you run this command again.
 launchctl kickstart -k gui/$UID/local.readmypo
 ```
 
