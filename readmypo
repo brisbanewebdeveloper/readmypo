@@ -45,6 +45,8 @@ Class myCurl {
             require($dir . DIRECTORY_SEPARATOR . $f);
             if (function_exists($function_name)) {
                 $this->{$property}[] = $function_name;
+                echo "Registered {$function_name}() in the file {$f}\n";
+                syslog(LOG_NOTICE, PROGRAM . ": Registered {$function_name}() in the file {$f}");
             } else {
                 echo "Found file {$f} but function {$function_name} not found\n";
                 syslog(LOG_NOTICE, PROGRAM . ": Found file {$f} but function {$function_name} not found");
@@ -65,6 +67,7 @@ Class myCurl {
         $this->getExtensions('command', 'commands', $dir, $f);
     }
     public function readExtensionSetting($dir) {
+        $dir = str_replace('/', DIRECTORY_SEPARATOR, $dir);
         if (file_exists($dir)) {
             $files = scandir($dir);
             if (count($files)) {
@@ -97,6 +100,7 @@ Class myCurl {
                 $this->$key = $this->setting->$key;
             }
             $this->readExtensionSetting('/usr/local/bin/readmypo-plugins');
+            $this->readExtensionSetting($this->getHomeDirectory() . '/src/readmypo/readmypo-plugins');
             return true;
         }
     }
