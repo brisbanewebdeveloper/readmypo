@@ -41,15 +41,20 @@ Class myCurl {
         static $appliedSetting = array();
 
         $function_name = str_replace('.inc', '', $f);
-        if (preg_match('#^'.$regex.'.+\.inc$#', $f)) {
-            require($dir . DIRECTORY_SEPARATOR . $f);
-            if (function_exists($function_name)) {
-                $this->{$property}[] = $function_name;
-                echo "Registered {$function_name}() in the file {$f}\n";
-                syslog(LOG_NOTICE, PROGRAM . ": Registered {$function_name}() in the file {$f}");
-            } else {
-                echo "Found file {$f} but function {$function_name} not found\n";
-                syslog(LOG_NOTICE, PROGRAM . ": Found file {$f} but function {$function_name} not found");
+        if (function_exists($function_name)) {
+            echo "{$function_name}() in {$f} is already registered\n";
+            syslog(LOG_NOTICE, PROGRAM . ": {$function_name}() in {$f} is already registered");
+        } else {
+            if (preg_match('#^'.$regex.'.+\.inc$#', $f)) {
+                require($dir . DIRECTORY_SEPARATOR . $f);
+                if (function_exists($function_name)) {
+                    $this->{$property}[] = $function_name;
+                    echo "Registered {$function_name}() in the file {$f}\n";
+                    syslog(LOG_NOTICE, PROGRAM . ": Registered {$function_name}() in the file {$f}");
+                } else {
+                    echo "Found file {$f} but function {$function_name} not found\n";
+                    syslog(LOG_NOTICE, PROGRAM . ": Found file {$f} but function {$function_name} not found");
+                }
             }
         }
 
@@ -99,7 +104,7 @@ Class myCurl {
             foreach ($this->setting as $key => $value) {
                 $this->$key = $this->setting->$key;
             }
-            $this->readExtensionSetting('/usr/local/bin/readmypo-plugins');
+            $this->readExtensionSetting('/usr/local/etc/readmypo-plugins');
             $this->readExtensionSetting($this->getHomeDirectory() . '/src/readmypo/readmypo-plugins');
             return true;
         }
