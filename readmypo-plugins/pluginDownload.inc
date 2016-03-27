@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This example plugin downloads the value specified in the message if the title is "!dl".
+ * Notice: You need to set the message to make this work.
+ */
+
 /*
     If you need to refer the setting:
 
@@ -36,7 +41,7 @@ function pluginDownload($myCurl, $data) {
 
     $filePath = $path . DIRECTORY_SEPARATOR . $filename;
     if (file_exists($filePath)) {
-        echo "{$data->url} - File exists\n";
+        echo "{$data->url} -> {$filePath} File exists\n";
         syslog(LOG_NOTICE, PROGRAM . ": Download: {$data->url} - File exists");
     } else {
         file_put_contents($filePath, $rawData);
