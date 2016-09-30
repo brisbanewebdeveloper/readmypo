@@ -10,10 +10,8 @@ This script uses PHP Extension to encrypt your pushover information.
 
 You need to do the followings at first:
 
-- Download PHP and extract the compressed file (No need to do ```configure``` or ```make install```).
-- Compile ```mcrypt``` extension (No need to install; Just compile with ```phpize```, ```configure``` and ```make```).
-- Create ```/etc/php.ini``` and put ```extension=<Full Path for the above extension>```  
-  Example: ```extension=/usr/local/src/php-5.5.27/ext/mcrypt/modules/mcrypt.so```
+- Install [Brew](http://brew.sh/).
+- Install the package `php70` and `php70-mcrypt` via Brew.
 
 ## Install from GitHub
 
@@ -53,17 +51,17 @@ readmypo register <Email for Pushover> <Password for Pushover> <Device Name>
 
 If it says "name: has already been taken", you need to delete the device at https://pushover.net/.
 
-Above command registers your device and displays the command to read Pushover message.  
+Above command registers your device and displays the command to read Pushover message.
 The registered device can be seen at: https://pushover.net/
 
-The infomation gets encrypted and saved as:  
+The infomation gets encrypted and saved as:
 ```~/Library/Application Support/readmypo/settings_<Device Name>.txt```
 
 Example Output:
 
 ```shell
 Setting is saved to /Users/example/Library/Application Support/readmypo/settings_<Device Name>.txt
-To read the message run "readmypo read 12e8a9s08e1sx <Device Name>"   <---- Use this command for next step
+To read the message run "readmypo read 12345e8a9s08e1sx <Device Name>"   <---- Use this command for next step
 ```
 
 #### Test if this script can read the message
@@ -76,7 +74,7 @@ readmypo read <The key from previous Step> <Device Name>
 
 Send a test message at: https://pushover.net/
 
-This command never finishes.  
+This command never finishes.
 To finish the command you press Ctrl + C on terminal.
 
 #### Regsiter the command to keep running with launchd
