@@ -117,12 +117,14 @@ Class myCurl {
             'secret' => $setting->secret,
             'device_id' => $setting->device_id,
         );
-        $tmpSetting = get_object_vars($this->setting);
-        foreach ($tmpSetting as $key => $value) {
-            $data[$key] = $value;
+        if ($this->setting) {
+            $tmpSetting = get_object_vars($this->setting);
+            foreach ($tmpSetting as $key => $value) {
+                $data[$key] = $value;
+            }
         }
 
-        if (is_null($key)) $key = uniqid();
+        if (is_null($key)) $key = bin2hex(random_bytes(8));
         $setting = json_encode($data);
 
         $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
@@ -311,6 +313,9 @@ switch ($argv[1]) {
             exit;
         } else {
             $key = $argv[2];
+            if (strlen($key) < 16) { // backward compatibility for PHP above 5.6
+                $key .= str_pad('', 16 - strlen($key), "\0");
+            }
         }
         if (empty($argv[3])) {
             echo "Device Name is missing\n";
@@ -366,6 +371,9 @@ switch ($argv[1]) {
             exit;
         } else {
             $key = $argv[2];
+            if (strlen($key) < 16) { // backward compatibility for PHP above 5.6
+                $key .= str_pad('', 16 - strlen($key), "\0");
+            }
         }
         if (empty($argv[3])) {
             echo "Device Name is missing\n";
