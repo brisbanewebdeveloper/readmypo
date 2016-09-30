@@ -28,6 +28,8 @@ function pluginDownloadReadSetting($myCurl) {
 */
 function pluginDownload($myCurl, $data) {
 
+    if (empty($data->title)) return;
+
     if (strpos($data->title, '!dl') === false) return;
 
     $rawData = file_get_contents($data->url);
